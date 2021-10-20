@@ -6,12 +6,12 @@ function Get-CurrentPath {
 }
 
 function Invoke-GitIgnoreProfileRequest {
-    param(
-      [Parameter(Mandatory=$true)]
-      [string[]]$list
-    )
-    $params = ($list | ForEach-Object { [uri]::EscapeDataString($_) }) -join ","
-    Invoke-WebRequest -Uri "https://www.toptal.com/developers/gitignore/api/$params" | Select-Object -ExpandProperty content | Out-File -FilePath $(Join-Path -path $pwd -ChildPath ".gitignore") -Encoding ascii
+  param(
+    [Parameter(Mandatory=$true)]
+    [string[]]$list
+  )
+  $params = ($list | ForEach-Object { [uri]::EscapeDataString($_) }) -join ","
+  Invoke-WebRequest -Uri "https://www.toptal.com/developers/gitignore/api/$params" | Select-Object -ExpandProperty content | Out-File -FilePath $(Join-Path -path $pwd -ChildPath ".gitignore") -Encoding ascii
 }
 
 function Invoke-GitPull {

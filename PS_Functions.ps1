@@ -1,7 +1,9 @@
 Import-Module "$PSScriptRoot\PS_SCMFunctions.ps1" -Force
-Import-Module "$PSScriptRoot\PS_StackItFunctions.ps1" -Force
 Import-Module "$PSScriptRoot\PS_NugetFunctions.ps1" -Force
 Import-Module "$PSScriptRoot\PS_BuildHelperFunctions.ps1" -Force
+# project related
+Import-Module "$PSScriptRoot\PS_StackItFunctions.ps1" -Force
+Import-Module "$PSScriptRoot\PS_LidlTravelFunctions.ps1" -Force
 
 # Needed for sam build command
 function Set-Utf8OutputEncoding {
@@ -19,5 +21,17 @@ function Convert-Base64ToFile {
     )
     process {
         [System.IO.File]::WriteAllBytes($Path, $([System.Convert]::FromBase64String($Base64)))
+    }
+}
+
+function Compare-FileHash {
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory=$true, ValueFromPipeline=$true)][string[]] $Path,
+        [Parameter(Mandatory=$true)] [string] $Hash,
+        [Parameter()][string] $Algorithm
+    )
+    process {
+        Get-FileHash @PSBoundParameters | Select-Object -ExpandProperty Hash | Compare-Object -ReferenceObject $Hash -IncludeEqual
     }
 }
