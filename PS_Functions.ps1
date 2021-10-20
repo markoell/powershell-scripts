@@ -29,9 +29,12 @@ function Compare-FileHash {
     param (
         [Parameter(Mandatory=$true, ValueFromPipeline=$true)][string[]] $Path,
         [Parameter(Mandatory=$true)] [string] $Hash,
-        [Parameter()][string] $Algorithm
+        [Parameter()][string] $Algorithm = "SHA256"
     )
     process {
-        Get-FileHash @PSBoundParameters | Select-Object -ExpandProperty Hash | Compare-Object -ReferenceObject $Hash -IncludeEqual
+        $parameter = @{ Path = $Path; Algorithm = $Algorithm }
+        Get-FileHash @parameter | 
+            Select-Object -ExpandProperty Hash | 
+            Compare-Object -ReferenceObject $Hash -IncludeEqual
     }
 }
