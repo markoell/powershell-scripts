@@ -1,7 +1,7 @@
 # Stackit / CloudFoundry functions
 function Start-Dockers {
     Push-Location .\src\shared\docker;
-    & docker-compose -p "lidl-travel-services" up -d;
+    & docker-compose -p "lidl-travel-services" up -d --build;
     Pop-Location
 }
 
